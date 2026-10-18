@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Стройнее — концепт 2, прототип с анимацией</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Unbounded:wght@500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#DDE3E8;color:#25272B;font-family:Inter,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+a:focus-visible,button:focus-visible{outline:2px solid #FF6B0C;outline-offset:3px}
+.lab{font:500 14px Inter,sans-serif;color:#5F636B}
+.lnk:hover{opacity:.7}
+.hatch{background:repeating-linear-gradient(135deg,rgba(255,255,255,.55) 0 12px,rgba(255,255,255,.35) 12px 24px)}
+@media (prefers-reduced-motion: no-preference){
+a,button{transition:transform .25s cubic-bezier(.2,.7,.2,1),box-shadow .25s,background-color .2s}
+.pill:hover{transform:translateY(-2px);box-shadow:0 12px 24px rgba(37,39,43,.22)}
+.pill:active{transform:scale(.97);box-shadow:none}
+.tile{transition:transform .4s cubic-bezier(.2,.7,.2,1),box-shadow .4s}
+.tile:hover{transform:translateY(-6px);box-shadow:0 24px 44px rgba(37,39,43,.14)}
+.float{animation:bob 6s ease-in-out infinite alternate}
+@keyframes bob{from{transform:translateY(0)}to{transform:translateY(-8px)}}
+}
+@media (max-width:760px){
+*,*::before,*::after{box-sizing:border-box}
+html,body{overflow-x:hidden;max-width:100%}
+footer.wrap{width:auto!important;max-width:100%!important}
+[style*="width:732px"]{width:auto!important;max-width:100%!important}
+.hero-t .hero-ph{max-width:100%!important}
+[style*="padding:20px;overflow-x:clip"]{padding:12px!important}
+.wrap{border-radius:28px!important;padding:12px!important;margin-bottom:12px!important}
+footer.wrap{margin-bottom:0!important}
+.nav,.hide-m{display:none!important}
+header{padding:6px 4px 12px 8px!important}
+header .pill .lbl{display:none}
+header .pill{padding:0 5px!important;gap:0!important}
+.hero-t{min-height:0!important;display:flex!important;flex-direction:column!important;gap:20px;padding:24px 20px 20px!important;border-radius:24px!important}
+.hero-t > div[style*="max-width:640px"]{order:1}
+.hero-t .hero-ph{position:relative!important;right:auto!important;top:auto!important;bottom:auto!important;width:100%!important;height:240px!important;border-radius:24px!important;order:2}
+.hero-t > div[style*="left:49px"]{position:static!important;order:3;max-width:none!important}
+.fl-top{display:none!important}
+.center-tile ~ .fl-top{display:block!important;position:static!important;width:auto!important;max-width:none!important;margin-top:8px}
+[style*="min-height:560px"]{min-height:0!important}
+.giant{font-size:64px!important;padding-top:8px!important}
+.center-tile{position:relative!important;left:auto!important;top:auto!important;transform:none!important;margin:8px 0!important;width:100%!important;height:260px!important;animation:none!important}
+.pad{padding:24px!important}
+.big{padding:24px!important;gap:24px!important}
+[style*="min-height:160px"],[style*="min-height:420px"],[style*="min-height:320px"]{min-height:0!important}
+#reviews h2{font-size:34px!important}
+.revrow{flex-wrap:nowrap!important;overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:none}
+.revrow::-webkit-scrollbar{display:none}
+.revrow > div{display:contents!important}
+.revrow .tile{flex:0 0 280px!important;scroll-snap-align:start;align-self:stretch;animation:none!important}
+.srow > a:nth-child(n+2){display:none}
+.more-chk:checked ~ .srow > a{display:block}
+.more-btn{display:inline-flex!important}
+.more-chk:checked ~ .more-btn{display:none!important}
+.rev-track{display:block!important}
+.rev-more{display:none!important}
+.rev-end{display:flex!important;flex:0 0 280px!important;scroll-snap-align:start;flex-direction:column;background:#25272B;color:#FFFFFF;border-radius:32px;padding:26px;min-height:0}
+a.tile[style*="flex:1.5 1 480px"]{padding:20px!important;min-height:0!important;gap:16px!important}
+[style*="clamp(24px,2.8vw,38px)"]{font-size:20px!important}
+.hatch[style*="width:353px"]{width:150px!important;height:170px!important;max-width:none!important;max-height:none!important}
+[style*="flex:0 0 108px"]{flex:0 0 72px!important;width:72px!important;height:72px!important;border-radius:16px!important}
+[style*="clamp(28px,3.6vw,48px)"]{font-size:30px!important}
+footer.wrap > div{padding:24px!important;border-radius:24px!important;min-height:0!important}
+}
+@media (prefers-reduced-motion: no-preference){
+nav a{background:linear-gradient(#FF6B0C,#FF6B0C) left bottom/0 2px no-repeat;padding-bottom:4px;transition:background-size .3s cubic-bezier(.2,.7,.2,1)}
+nav a:hover{background-size:100% 2px}
+.pill svg{transition:transform .25s cubic-bezier(.2,.7,.2,1)}
+.pill:hover svg{transform:translate(2px,-2px)}
+.tile > div > svg{transition:transform .3s cubic-bezier(.2,.7,.2,1)}
+.tile:hover > div > svg{transform:translate(4px,-4px)}
+.tile .hatch{transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+.tile:hover .hatch{transform:scale(1.03)}
+}
+
+.rv-pre{opacity:0;transform:translateY(48px)}
+.rv-pre.rv-in{opacity:1;transform:none;transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
+.hero-t.rv-pre{transform:scale(.94)}
+.hero-t.rv-pre.rv-in{transform:none}
+.center-tile.rv-pre{transform:translateX(-50%) translateY(60px) rotate(-5deg) scale(.9)}
+.center-tile.rv-pre.rv-in{transform:translateX(-50%) translateY(0) rotate(0) scale(1)}
+@media (max-width:760px){.center-tile.rv-pre{transform:translateY(40px)}.center-tile.rv-pre.rv-in{transform:none}}
+</style>
+</head>
+<body>
+<div style="padding:20px;overflow-x:clip">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<symbol id="logo" viewBox="0 0 210 42"><path fill-rule="evenodd" clip-rule="evenodd" d="M0.715858 0.615234H208.351V41.1245H0.715858V0.615234Z" fill="#FF6B00"></path>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M39.9304 2.94625H206.006V38.7933H39.9304V2.94625Z" fill="white"></path>
+<path d="M15.4088 24.3402C15.5427 25.2424 16.0874 25.9499 17.043 26.4676C17.9987 26.9851 19.2601 27.2464 20.8274 27.2464C22.2992 27.2464 23.4506 27.0564 24.2773 26.6766C25.104 26.2966 25.5149 25.7553 25.5149 25.0526C25.5149 24.6726 25.4098 24.3544 25.1995 24.1028C24.9892 23.8512 24.6357 23.6469 24.1339 23.4855C23.6322 23.324 22.9347 23.2006 22.0458 23.115L18.0607 22.7447C15.127 22.4788 12.9863 21.8187 11.634 20.7694C10.2818 19.7198 9.60325 18.262 9.60325 16.391C9.60325 14.9381 10.0334 13.6939 10.8934 12.6635C11.7535 11.6331 12.9719 10.8495 14.5439 10.313C16.1161 9.77631 17.9605 9.51038 20.0819 9.51038C22.1271 9.51038 23.9571 9.80478 25.5722 10.3937C27.1872 10.9825 28.4678 11.8088 29.4091 12.8725C30.3505 13.9361 30.8665 15.166 30.962 16.5621H24.9128C24.8076 15.7928 24.3251 15.185 23.4601 14.7434C22.5954 14.3018 21.4294 14.0833 19.9673 14.0833C18.6103 14.0833 17.5495 14.2637 16.7803 14.6247C16.0109 14.9855 15.6238 15.4984 15.6238 16.1633C15.6238 16.6854 15.8627 17.0891 16.3406 17.3788C16.8185 17.6685 17.6546 17.8774 18.8492 18.0009L23.1353 18.414C25.1709 18.604 26.8002 18.9316 28.0235 19.397C29.2467 19.8624 30.1355 20.4986 30.6898 21.3059C31.2441 22.1131 31.5212 23.134 31.5212 24.3687C31.5212 25.8503 31.072 27.1513 30.1737 28.2768C29.2753 29.4022 28.0091 30.2759 26.375 30.8932C24.7408 31.5106 22.8535 31.8192 20.7128 31.8192C18.5053 31.8192 16.5509 31.5058 14.8499 30.8837C13.1487 30.2616 11.8204 29.3879 10.8648 28.2578C9.90906 27.1277 9.40741 25.8217 9.35965 24.3402L15.4088 24.3402Z" fill="white"></path>
+<path d="M45.6432 19.4293V17.4914L48.0238 16.4788L49.8222 12.7987H52.1926V16.1413H57.1071V19.4293H52.1926V23.1094C52.1926 23.719 52.2675 24.198 52.4139 24.5466C52.5605 24.8949 52.8023 25.1453 53.143 25.2977C53.4834 25.4502 53.9601 25.5265 54.5734 25.5265C55.1182 25.5265 55.612 25.4755 56.0514 25.3776C56.4907 25.2795 56.9096 25.1417 57.3115 24.9602V28.2919C56.8484 28.4733 56.2864 28.6258 55.6256 28.7529C54.9649 28.8797 54.2974 28.9452 53.6232 28.9452C51.7362 28.9452 50.3329 28.4843 49.41 27.5661C48.487 26.6478 48.0238 25.3631 48.0238 23.7082V19.4293L45.6432 19.4293ZM67.4167 15.782C67.8663 15.782 68.3465 15.8401 68.8573 15.9561V19.756C68.0945 19.589 67.3861 19.5055 66.7321 19.5055C65.7377 19.5055 64.9337 19.8249 64.3208 20.4637C63.7077 21.1024 63.4013 22.1041 63.4013 23.4687V28.5859H59.2223V20.333L58.4561 16.1413H62.7064L63.2173 19.4185C64.0075 16.9942 65.4073 15.782 67.4167 15.782ZM77.2562 28.9452C75.778 28.9452 74.4736 28.6692 73.3428 28.1213C72.2121 27.5733 71.3367 26.8038 70.7135 25.8095C70.0902 24.8151 69.7769 23.6682 69.7769 22.369C69.7769 21.0697 70.0902 19.9193 70.7135 18.9212C71.3367 17.9231 72.2121 17.1502 73.3428 16.6022C74.4736 16.0542 75.778 15.7819 77.2562 15.7819C78.7344 15.7819 80.0386 16.0542 81.1694 16.6022C82.3002 17.1502 83.1789 17.9231 83.802 18.9212C84.4253 19.9193 84.7353 21.0697 84.7353 22.369C84.7353 23.6682 84.4253 24.8151 83.802 25.8095C83.1789 26.8038 82.3002 27.5733 81.1694 28.1213C80.0386 28.6693 78.7343 28.9452 77.2562 28.9452ZM77.2562 25.6352C77.9304 25.6352 78.5128 25.5047 79.0034 25.2432C79.4937 24.982 79.8684 24.6047 80.1272 24.1146C80.3861 23.6247 80.5155 23.0441 80.5155 22.369C80.5155 21.694 80.3861 21.1097 80.1237 20.616C79.8615 20.1225 79.487 19.7451 78.9999 19.4837C78.5128 19.2224 77.9304 19.0917 77.2562 19.0917C76.5818 19.0917 75.9994 19.2224 75.5089 19.4837C75.0185 19.7451 74.6439 20.1225 74.3815 20.616C74.1194 21.1097 73.9865 21.694 73.9865 22.369C73.9865 23.0441 74.1194 23.6247 74.3815 24.1146C74.6439 24.6047 75.0185 24.982 75.5089 25.2432C75.9994 25.5047 76.5818 25.6352 77.2562 25.6352ZM96.7613 16.1413H101.206L95.5965 28.8253C95.0243 30.1246 94.2785 31.0682 93.3588 31.6562C92.4393 32.2441 91.4277 32.538 90.3242 32.538C89.4729 32.538 88.7134 32.4254 88.0423 32.2042C87.3714 31.9827 86.7175 31.6307 86.0839 31.1445V28.0631C86.731 28.4987 87.3339 28.8108 87.8925 28.9996C88.4511 29.1883 89.0641 29.2827 89.7316 29.2827C90.338 29.2827 90.8488 29.1446 91.2644 28.8689C91.6797 28.5931 92.0204 28.1212 92.286 27.4535L92.2963 27.4209H90.4673L85.5015 16.1413H90.1096L93.3999 24.6336L96.7613 16.1413ZM111.045 15.7819C112.149 15.7819 113.099 16.0179 113.896 16.4933C114.693 16.9687 115.299 17.6474 115.715 18.5256C116.13 19.4039 116.338 20.4381 116.338 21.6286V28.5858H112.169V22.282C112.169 21.3528 111.948 20.6415 111.505 20.1479C111.062 19.6544 110.426 19.4076 109.594 19.4076C109.015 19.4076 108.515 19.5345 108.089 19.7923C107.663 20.0499 107.336 20.4202 107.108 20.9027C106.88 21.3855 106.764 21.9516 106.764 22.5977V28.5858H102.585V20.4418L101.819 16.1413H105.998L106.396 18.7325C106.9 17.7744 107.558 17.0413 108.365 16.5367C109.172 16.0324 110.064 15.7819 111.045 15.7819ZM122.479 23.6319C122.765 24.2924 123.248 24.797 123.93 25.149C124.611 25.501 125.469 25.6788 126.504 25.6788C127.363 25.6788 128.217 25.5591 129.069 25.3195C129.92 25.0801 130.697 24.7389 131.398 24.2961V27.1268C130.581 27.7148 129.658 28.1649 128.63 28.4769C127.601 28.7891 126.498 28.9452 125.319 28.9452C123.909 28.9452 122.646 28.6656 121.529 28.1104C120.411 27.5551 119.536 26.7785 118.903 25.7767C118.269 24.7752 117.952 23.6247 117.952 22.3254C117.952 21.0479 118.259 19.912 118.868 18.9176C119.478 17.9231 120.319 17.1502 121.396 16.6022C122.472 16.0542 123.684 15.7819 125.033 15.7819C126.402 15.7819 127.587 16.1013 128.589 16.7437C129.59 17.3861 130.36 18.297 130.894 19.4765C131.429 20.656 131.695 22.0423 131.695 23.6319L122.479 23.6319ZM125.125 18.9176C124.41 18.9176 123.807 19.0991 123.313 19.4656C122.819 19.8322 122.479 20.3294 122.295 20.9535H127.812C127.621 20.3003 127.298 19.7959 126.838 19.4439C126.378 19.0917 125.806 18.9176 125.125 18.9176ZM137.478 23.6319C137.764 24.2924 138.248 24.797 138.929 25.149C139.61 25.501 140.468 25.6788 141.504 25.6788C142.362 25.6788 143.217 25.5591 144.068 25.3195C144.92 25.0801 145.696 24.7389 146.398 24.2961V27.1268C145.58 27.7148 144.658 28.1649 143.629 28.4769C142.6 28.7891 141.497 28.9452 140.318 28.9452C138.908 28.9452 137.645 28.6656 136.528 28.1104C135.411 27.5551 134.535 26.7785 133.902 25.7767C133.268 24.7752 132.952 23.6247 132.952 22.3254C132.952 21.0479 133.258 19.912 133.868 18.9176C134.477 17.9231 135.319 17.1502 136.395 16.6022C137.471 16.0542 138.684 15.7819 140.033 15.7819C141.401 15.7819 142.587 16.1013 143.588 16.7437C144.589 17.3861 145.359 18.297 145.894 19.4765C146.429 20.656 146.694 22.0423 146.694 23.6319L137.478 23.6319ZM140.124 18.9176C139.409 18.9176 138.806 19.0991 138.312 19.4656C137.819 19.8322 137.478 20.3294 137.294 20.9535H142.812C142.621 20.3003 142.297 19.7959 141.837 19.4439C141.378 19.0917 140.805 18.9176 140.124 18.9176ZM150.403 28.8144C149.967 28.8144 149.572 28.7019 149.214 28.4806C148.857 28.2591 148.574 27.9579 148.366 27.5769C148.159 27.1958 148.053 26.7748 148.053 26.3102C148.053 25.8458 148.159 25.4211 148.366 25.0401C148.574 24.6589 148.857 24.3577 149.214 24.1364C149.572 23.915 149.967 23.8062 150.403 23.8062C150.839 23.8062 151.238 23.915 151.595 24.1364C151.953 24.3577 152.235 24.6589 152.443 25.0401C152.651 25.4211 152.753 25.8458 152.753 26.3102C152.753 26.7748 152.651 27.1958 152.443 27.5769C152.235 27.9579 151.953 28.2591 151.595 28.4806C151.238 28.7019 150.839 28.8144 150.403 28.8144ZM163.696 15.7819C164.827 15.7819 165.832 16.0542 166.707 16.6022C167.582 17.1502 168.26 17.9231 168.744 18.9212C169.227 19.9193 169.469 21.0697 169.469 22.369C169.469 23.661 169.227 24.8041 168.744 25.8022C168.26 26.8003 167.582 27.5732 166.707 28.1212C165.832 28.6692 164.827 28.9451 163.696 28.9451C162.674 28.9451 161.745 28.7019 160.907 28.2157C160.069 27.7293 159.367 27.0434 158.802 26.1579V32.1787H154.623V16.1413H158.802V18.5256C159.374 17.6474 160.079 16.9687 160.914 16.4933C161.748 16.0179 162.674 15.7819 163.696 15.7819ZM162.44 25.5373C162.984 25.5373 163.471 25.3994 163.897 25.1272C164.323 24.8549 164.653 24.4811 164.892 24.002C165.13 23.5231 165.249 22.9786 165.249 22.369C165.249 21.7593 165.13 21.2113 164.892 20.7285C164.653 20.2458 164.323 19.8685 163.897 19.5962C163.471 19.324 162.984 19.1898 162.44 19.1898C161.888 19.1898 161.36 19.324 160.852 19.5962C160.345 19.8685 159.899 20.2458 159.514 20.7285C159.129 21.2113 158.836 21.7593 158.639 22.369C158.836 22.9786 159.129 23.5231 159.514 24.002C159.899 24.4811 160.345 24.8549 160.852 25.1272C161.36 25.3994 161.888 25.5373 162.44 25.5373ZM179.687 15.7819C180.136 15.7819 180.616 15.84 181.127 15.9561V19.7559C180.364 19.5889 179.656 19.5055 179.002 19.5055C178.007 19.5055 177.204 19.8249 176.591 20.4636C175.978 21.1024 175.671 22.1041 175.671 23.4687V28.5858H171.492V20.3329L170.726 16.1413H174.976L175.487 19.4184C176.277 16.9942 177.677 15.7819 179.687 15.7819ZM189.526 28.9451C188.048 28.9451 186.743 28.6692 185.613 28.1212C184.482 27.5732 183.606 26.8038 182.983 25.8095C182.36 24.8151 182.047 23.6682 182.047 22.369C182.047 21.0697 182.36 19.9193 182.983 18.9212C183.606 17.9231 184.482 17.1502 185.613 16.6022C186.743 16.0542 188.048 15.7819 189.526 15.7819C191.004 15.7819 192.308 16.0542 193.439 16.6022C194.57 17.1502 195.449 17.9231 196.072 18.9212C196.695 19.9193 197.005 21.0697 197.005 22.369C197.005 23.6682 196.695 24.8151 196.072 25.8095C195.449 26.8038 194.57 27.5732 193.439 28.1212C192.308 28.6692 191.004 28.9451 189.526 28.9451ZM189.526 25.6352C190.2 25.6352 190.783 25.5046 191.273 25.2432C191.764 24.9819 192.138 24.6046 192.397 24.1146C192.656 23.6247 192.785 23.0441 192.785 22.369C192.785 21.694 192.656 21.1097 192.394 20.616C192.131 20.1224 191.757 19.7451 191.27 19.4837C190.783 19.2224 190.2 19.0917 189.526 19.0917C188.852 19.0917 188.269 19.2224 187.779 19.4837C187.288 19.7451 186.914 20.1224 186.651 20.616C186.389 21.1097 186.256 21.694 186.256 22.369C186.256 23.0441 186.389 23.6247 186.651 24.1146C186.914 24.6046 187.288 24.9819 187.779 25.2432C188.269 25.5046 188.852 25.6352 189.526 25.6352Z" fill="#FF6B00"></path></symbol>
+<symbol id="pen" viewBox="0 0 26 46"><rect x="9" y="0" width="8" height="6" rx="2" fill="#D5D8DD"></rect><rect x="6" y="3" width="14" height="40" rx="5" fill="#FFFFFF"></rect><rect x="9" y="12" width="8" height="8" rx="2" fill="#B8BEC5"></rect><rect x="9" y="28" width="8" height="3" rx="1.5" fill="#FF6B0C"></rect></symbol><symbol id="pen-t" viewBox="0 0 26 46"><rect x="9" y="0" width="8" height="6" rx="2" fill="#D5D8DD"></rect><rect x="6" y="3" width="14" height="40" rx="5" fill="#FFFFFF"></rect><rect x="9" y="12" width="8" height="8" rx="2" fill="#B8BEC5"></rect><rect x="9" y="28" width="8" height="3" rx="1.5" fill="#2FB5AA"></rect></symbol>
+<symbol id="box" viewBox="0 0 40 40"><rect x="5" y="9" width="30" height="22" rx="4" fill="#FFFFFF"></rect><rect x="9" y="14" width="12" height="3" rx="1.5" fill="#0A7C7C"></rect><rect x="9" y="20" width="22" height="2" rx="1" fill="#9FD3CE"></rect><rect x="9" y="24" width="16" height="2" rx="1" fill="#9FD3CE"></rect></symbol>
+<symbol id="arr" viewBox="0 0 16 16"><path d="M3 13L13 3M5 3h8v8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></symbol>
+</svg>
+
+<!-- КОНТЕЙНЕР 1: шапка, герой, решения -->
+<section class="wrap" style="max-width:1360px;margin:0 auto 20px;background:#FFFFFF;border-radius:44px;padding:20px">
+<header style="display:flex;align-items:center;justify-content:space-between;gap:20px;padding:6px 8px 20px 16px">
+<a href="#" aria-label="Stroynee.pro — на главную" style="display:block;line-height:0"><svg width="168" height="34" viewBox="0 0 210 42" role="img" aria-label="Stroynee.pro"><use href="#logo"></use></svg></a>
+<nav class="nav" aria-label="Основная навигация" style="display:flex;gap:30px;font:500 14px Inter,sans-serif">
+<a href="#stories" style="text-decoration:none">Истории</a><a href="#reviews" style="text-decoration:none">Отзывы</a><a href="#articles" style="text-decoration:none">Блог</a><a href="#solutions" style="text-decoration:none">Калькулятор</a><a href="#gerofarm" style="text-decoration:none">Препараты</a><a href="#articles" style="text-decoration:none">Новости</a><a href="#solutions" style="text-decoration:none">О приложении</a>
+</nav>
+<div style="display:flex;gap:8px;align-items:center">
+<button type="button" class="pill hide-m" aria-label="Выбрать регион: Россия" style="height:46px;padding:0 18px;border-radius:999px;border:1px solid #C0C7CD;background:#FFFFFF;font:500 14px Inter,sans-serif;cursor:pointer">Россия ▾</button>
+<a href="#solutions" class="pill" style="display:inline-flex;align-items:center;gap:12px;height:44px;padding:0 22px 0 5px;border-radius:999px;background:#FFFFFF;border:1.5px solid #25272B;color:#25272B;font:600 14px Inter,sans-serif;text-decoration:none;white-space:nowrap"><span style="width:32px;height:32px;border-radius:50%;background:#FF6B0C;display:flex;align-items:center;justify-content:center;flex:0 0 32px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4.5h6M8 4h8a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><path d="M9 13.5l2.2 2.2 4-4.4"/></svg></span><span class="lbl">Пройти тест</span></a>
+</div>
+</header>
+
+<div class="hero-t" style="position:relative;border-radius:32px;overflow:clip;min-height:706px;background:linear-gradient(120deg,#CDEFE9 0%,#EAF8F5 42%,#FFE3D1 100%);padding:48px">
+<div class="hero-ph hatch" style="position: absolute; right: 0; top: 0; bottom: 0; width: 606px; display: flex; align-items: center; justify-content: center; text-align: center; padding: 24px; font: 500 14px/1.4 Inter,sans-serif; color: #25272B; border-radius: 0 0 0 160px">[Фото: портрет героини истории — живой человек, не модель.<br>Для каждой локализации своё лицо]</div>
+<div style="position:relative;max-width:640px">
+<h1 style="margin:0;font:600 clamp(34px,4.8vw,64px)/1.05 Unbounded,sans-serif;letter-spacing:-.02em">Меняем вес — меняем жизнь</h1>
+<p style="margin:24px 0 0;font:400 19px/1.5 Inter,sans-serif;max-width:480px">Какой бы путь для снижения веса вы ни рассматривали, мы рядом с нашими сервисами, чтобы помочь вам.</p>
+<div style="margin-top:22px;display:flex;flex-wrap:wrap;gap:8px"><span style="background:#FFFFFF;border-radius:999px;padding:9px 16px;font:500 14px Inter,sans-serif">Достичь результата</span><span style="background:#FFFFFF;border-radius:999px;padding:9px 16px;font:500 14px Inter,sans-serif">Изменить отношение к себе</span><span style="background:#FFFFFF;border-radius:999px;padding:9px 16px;font:500 14px Inter,sans-serif">Сформировать новые привычки</span></div>
+<div style="margin-top:28px;display:flex;flex-wrap:wrap;gap:10px">
+<a href="#stories" class="pill" style="display:inline-flex;align-items:center;gap:18px;height:56px;padding:0 28px 0 4px;border-radius:999px;background:#25272B;color:#FFFFFF;font:600 16px Inter,sans-serif;text-decoration:none;white-space:nowrap"><span style="width:48px;height:48px;border-radius:50%;background:#FF6B0C;display:flex;align-items:center;justify-content:center;flex:0 0 48px"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 4.5h11A2.5 2.5 0 0 1 20 7v7a2.5 2.5 0 0 1-2.5 2.5H11l-4.5 3.5v-3.5A2.5 2.5 0 0 1 4 14V7a2.5 2.5 0 0 1 2.5-2.5z"/><path d="M8.5 10h7"/></svg></span>Получить поддержку</a>
+<a href="#solutions" class="pill" style="display:inline-flex;align-items:center;gap:12px;height:48px;padding:0 22px 0 5px;border-radius:999px;background:#FFFFFF;border:1.5px solid #25272B;color:#25272B;font:600 15px Inter,sans-serif;text-decoration:none;white-space:nowrap"><span style="width:36px;height:36px;border-radius:50%;background:#FF6B0C;display:flex;align-items:center;justify-content:center;flex:0 0 36px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4.5h6M8 4h8a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><path d="M9 13.5l2.2 2.2 4-4.4"/></svg></span>Пройти тест</a>
+</div>
+</div>
+<a href="#solutions" class="fl-top float" style="position:absolute;right:24px;top:24px;width:210px;background:#FFFFFF;border-radius:26px;padding:14px;box-shadow:0 14px 30px rgba(37,39,43,.14);text-decoration:none;display:block">
+<div style="display:flex;align-items:center;justify-content:space-between"><span style="width:30px;height:30px;border-radius:50%;border:1px solid #25272B;display:flex;align-items:center;justify-content:center"><svg width="12" height="12"><use href="#arr"></use></svg></span><span style="background:#E6E8EC;border-radius:999px;padding:4px 10px;font:600 12px Inter,sans-serif">тест</span></div>
+<div style="margin-top:34px;font:600 16px/1.25 Inter,sans-serif">Узнайте свой путь к стройности</div>
+</a>
+<div style="position:absolute;left:49px;bottom:42px;max-width:420px;background:#FFFFFF;border-radius:30px;padding:12px;display:flex;gap:14px;align-items:center;box-shadow:0 14px 30px rgba(37,39,43,.12)">
+<div class="hatch" style="flex:0 0 76px;height:92px;border-radius:20px;background-color:#CDEFE9"></div>
+<div style="font:italic 500 13px/1.4 Inter,sans-serif;padding-right:10px">«Я не чувствовала насыщения»<div style="margin-top:6px;font:600 12px Inter,sans-serif;font-style:normal;color:#5F636B">Ирина Горбачёва, 38 лет · −11 кг</div></div>
+</div>
+</div>
+
+<div style="display:flex;flex-wrap:wrap;gap:20px 40px;padding:56px 24px 40px;align-items:flex-start;justify-content:space-between">
+<span class="lab" style="flex:1 1 200px">( Знакомо? )</span>
+<div style="flex:2 1 520px;max-width:720px"><p style="margin:0;font:400 clamp(20px,2.2vw,28px)/1.4 Inter,sans-serif;color:#5F636B;width:732px">Хватит ходить по кругу. Давайте устраним причину, а не следствие.</p></div>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:12px;padding:0 4px 28px">
+<div class="tile" style="flex:1 1 300px;border-radius:28px;background:#EAF8F5;padding:24px;min-height:160px;display:flex;flex-direction:column;justify-content:space-between"><span class="lab">( 01 )</span><p style="margin:16px 0 0;font:600 18px/1.35 Inter,sans-serif">Есть понимание, что делать, чтобы похудеть, а мотивации делать это нет</p></div>
+<div class="tile" style="flex:1 1 300px;border-radius:28px;background:#FFF1E8;padding:24px;min-height:160px;display:flex;flex-direction:column;justify-content:space-between"><span class="lab">( 02 )</span><p style="margin:16px 0 0;font:600 18px/1.35 Inter,sans-serif">Много противоречивой информации о похудении, какой верить — не понятно</p></div>
+<div class="tile" style="flex:1 1 300px;border-radius:28px;background:#EEF1F4;padding:24px;min-height:160px;display:flex;flex-direction:column;justify-content:space-between"><span class="lab">( 03 )</span><p style="margin:16px 0 0;font:600 18px/1.35 Inter,sans-serif">Начинаете худеть, но через неделю срываетесь на ровном месте</p></div>
+<div class="tile" style="flex:1 1 300px;border-radius:28px;background:#EEF1F4;padding:24px;min-height:160px;display:flex;flex-direction:column;justify-content:space-between"><span class="lab">( 04 )</span><p style="margin:16px 0 0;font:600 18px/1.35 Inter,sans-serif">Окружающие и близкие не поддерживают ваше похудение, а саботируют его</p></div>
+<div class="tile" style="flex:1 1 300px;border-radius:28px;background:#EAF8F5;padding:24px;min-height:160px;display:flex;flex-direction:column;justify-content:space-between"><span class="lab">( 05 )</span><p style="margin:16px 0 0;font:600 18px/1.35 Inter,sans-serif">Прежние способы похудеть перестали работать</p></div>
+<div class="tile" style="flex:1 1 300px;border-radius:28px;background:#FFF1E8;padding:24px;min-height:160px;display:flex;flex-direction:column;justify-content:space-between"><span class="lab">( 06 )</span><p style="margin:16px 0 0;font:600 18px/1.35 Inter,sans-serif">В обычной жизни нет столько времени на спорт и правильное питание</p></div>
+</div>
+
+<div id="solutions" style="display:flex;flex-wrap:wrap;gap:20px 40px;padding:40px 24px 28px;align-items:flex-start;justify-content:space-between">
+<span class="lab" style="flex:1 1 200px">( Наши решения )</span>
+<div style="flex:2 1 520px;max-width:760px"><h2 style="margin:0;font:600 clamp(22px,2.4vw,32px)/1.25 Unbounded,sans-serif;letter-spacing:-.01em">Наши решения, созданные вместе с практикующими врачами, — для вас</h2></div>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:12px;padding:0 4px 4px">
+<a href="#solutions" class="tile" style="flex:1 1 280px;min-height:420px;border-radius:32px;padding:20px;background:linear-gradient(160deg,#CDEFE9,#EAF8F5);text-decoration:none;display:flex;flex-direction:column"><div style="display:flex;justify-content:space-between"><span class="lab" style="color:#25272B">( тест )</span><svg width="18" height="18"><use href="#arr"></use></svg></div>
+<div class="hatch" style="margin:18px 0;flex:1;min-height:120px;border-radius:24px"></div>
+<div style="font:600 20px/1.2 Unbounded,sans-serif">Тест: узнайте свой путь к стройности</div><p style="margin:10px 0 0;font:600 15px/1.4 Inter,sans-serif">Помогает услышать себя, а не ставит диагнозов</p><p style="margin:8px 0 0;font:400 14px/1.5 Inter,sans-serif;color:#5F636B">Ответьте на несколько вопросов и получите личную стратегию: с чего начать, на что опираться и в каком темпе двигаться к желаемому весу.</p></a>
+<a href="#solutions" class="tile" style="flex:1 1 280px;min-height:420px;border-radius:32px;padding:20px;background:linear-gradient(160deg,#FFE3D1,#FFF2E8);text-decoration:none;display:flex;flex-direction:column"><div style="display:flex;justify-content:space-between"><span class="lab" style="color:#25272B">( абонемент )</span><svg width="18" height="18"><use href="#arr"></use></svg></div>
+<div class="hatch" style="margin:18px 0;flex:1;min-height:120px;border-radius:24px"></div>
+<div style="font:600 20px/1.2 Unbounded,sans-serif">Абонемент здоровья</div><p style="margin:10px 0 0;font:600 15px/1.4 Inter,sans-serif">Худейте с выгодой — скидки на тирзепатид и семаглутид</p><p style="margin:8px 0 0;font:400 14px/1.5 Inter,sans-serif;color:#5F636B">Вступите в программу лояльности и получайте скидки и кэшбэки за каждую покупку препаратов ГЕРОФАРМ Седжаро®, Семавик®, Семавик Некст®.</p></a>
+<a href="#solutions" class="tile" style="flex:1 1 280px;min-height:420px;border-radius:32px;padding:20px;background:linear-gradient(160deg,#D5E9F0,#EEF6F9);text-decoration:none;display:flex;flex-direction:column"><div style="display:flex;justify-content:space-between"><span class="lab" style="color:#25272B">( приложение )</span><svg width="18" height="18"><use href="#arr"></use></svg></div>
+<div class="hatch" style="margin:18px 0;flex:1;min-height:120px;border-radius:24px"></div>
+<div style="font:600 20px/1.2 Unbounded,sans-serif">Приложение Stroynee</div><p style="margin:10px 0 0;font:600 15px/1.4 Inter,sans-serif">Поможет в борьбе с лишним весом</p><p style="margin:8px 0 0;font:400 14px/1.5 Inter,sans-serif;color:#5F636B">Построит персональный план с учётом питания, сна, терапии и привычек — и поведёт к результату последовательно с медицинской поддержкой.</p></a>
+<a href="#solutions" class="tile" style="flex:1 1 280px;min-height:420px;border-radius:32px;padding:20px;background:linear-gradient(160deg,#E3E7EC,#F3F5F7);text-decoration:none;display:flex;flex-direction:column"><div style="display:flex;justify-content:space-between"><span class="lab" style="color:#25272B">( школа )</span><svg width="18" height="18"><use href="#arr"></use></svg></div>
+<div class="hatch" style="margin:18px 0;flex:1;min-height:120px;border-radius:24px"></div>
+<div style="font:600 20px/1.2 Unbounded,sans-serif">Школа диабета Терапевтум</div><p style="margin:10px 0 0;font:600 15px/1.4 Inter,sans-serif">Поможет взять сахар под контроль</p><p style="margin:8px 0 0;font:400 14px/1.5 Inter,sans-serif;color:#5F636B">Заложите основу здоровых привычек для жизни с сахарным диабетом 1 и 2 типа вместе с врачами-эндокринологами.</p></a>
+</div>
+</section>
+
+<!-- БАННЕР 1 -->
+<section aria-label="Рекламный баннер" class="wrap" style="max-width:1360px;margin:0 auto 20px;background:#FFFFFF;border-radius:44px;padding:20px">
+<div style="border-radius:32px;background:linear-gradient(120deg,#FF6B0C 0%,#FFA400 100%);padding:44px;display:flex;flex-wrap:wrap;gap:24px;align-items:center;justify-content:space-between">
+<div style="max-width:560px"><span style="background:rgba(255,255,255,.4);border-radius:999px;padding:6px 14px;font:600 12px Inter,sans-serif">( реклама )</span>
+<h2 style="margin:18px 0 0;font:600 clamp(26px,3.2vw,40px)/1.1 Unbounded,sans-serif;letter-spacing:-.01em">Культура стройности</h2>
+<p style="margin:14px 0 0;font:400 18px/1.5 Inter,sans-serif">ГЕРОФАРМ поддерживает спорт как основу здоровья, снижения веса и сохранения мышечной массы на New Star Camp.</p></div>
+<a href="#solutions" class="pill" style="display:inline-flex;align-items:center;gap:12px;height:52px;padding:0 22px 0 5px;border-radius:999px;background:#FFFFFF;border:1.5px solid #25272B;color:#25272B;font:600 15px Inter,sans-serif;text-decoration:none;white-space:nowrap"><span style="width:40px;height:40px;border-radius:50%;background:#FF6B0C;display:flex;align-items:center;justify-content:center;flex:0 0 40px"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 8v8M17.5 8v8M3.5 10v4M20.5 10v4M6.5 12h11"/></svg></span>Подробнее</a>
+</div>
+</section>
+
+<!-- КОНТЕЙНЕР: ИСТОРИИ -->
+<section id="stories" class="wrap" style="position:relative;max-width:1360px;margin:0 auto 20px;background:#FFFFFF;border-radius:44px;padding:20px;overflow:clip">
+<div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;padding:4px 4px 0">
+<div style="display:flex;gap:8px;flex-wrap:wrap"><span style="border:1px solid #C0C7CD;border-radius:999px;padding:7px 14px;font:500 13px Inter,sans-serif">Истории</span><span style="background:#25272B;color:#FFFFFF;border-radius:999px;padding:7px 14px;font:600 13px Inter,sans-serif">130</span></div>
+<div role="group" aria-label="Фильтр по терапии" style="display:flex;gap:8px;flex-wrap:wrap">
+<button type="button" class="pill" style="border:1px solid #25272B;background:#25272B;color:#FFFFFF;border-radius:999px;padding:7px 16px;font:500 13px Inter,sans-serif;cursor:pointer">Все</button>
+<button type="button" class="pill" style="border:1px solid #C0C7CD;background:#FFFFFF;border-radius:999px;padding:7px 16px;font:500 13px Inter,sans-serif;cursor:pointer">Седжаро®</button>
+<button type="button" class="pill" style="border:1px solid #C0C7CD;background:#FFFFFF;border-radius:999px;padding:7px 16px;font:500 13px Inter,sans-serif;cursor:pointer">Семавик®</button>
+</div>
+</div>
+<div style="position:relative;min-height:560px">
+<div class="giant" style="font:600 clamp(80px,15vw,210px)/1 Unbounded,sans-serif;letter-spacing:-.04em;text-align:center;padding-top:26px">Истории</div>
+<div class="center-tile" style="position:absolute;left:50%;transform:translateX(-50%);top:150px;width:min(520px,60%);height:360px;border-radius:36px;background:linear-gradient(135deg,#FF6B0C,#FFA400);padding:10px;display:flex;gap:8px;box-shadow:0 30px 60px rgba(37,39,43,.22)">
+<div class="hatch" style="flex:1;border-radius:28px 6px 6px 28px;display:flex;align-items:flex-end;padding:12px"><span style="background:#25272B;color:#FFFFFF;border-radius:999px;padding:4px 12px;font:600 12px Inter,sans-serif">До</span></div>
+<div class="hatch" style="flex:1;border-radius:6px 28px 28px 6px;display:flex;align-items:flex-end;padding:12px"><span style="background:#25272B;color:#FFFFFF;border-radius:999px;padding:4px 12px;font:600 12px Inter,sans-serif">После</span></div>
+</div>
+<div class="fl-top" style="position:absolute;right:0;bottom:12px;width:300px;background:#EAF8F5;border-radius:28px;padding:18px">
+<p style="margin:0;font:italic 500 15px/1.45 Inter,sans-serif">Я всегда много двигалась. С детства в моей жизни были танцы, позже — йога…</p>
+</div>
+</div>
+<input type="checkbox" id="more-st" class="more-chk" aria-label="Показать больше историй" style="display:none">
+<div class="srow" style="display:flex;flex-wrap:wrap;gap:12px;padding:12px 4px 4px">
+<a href="#stories" class="tile" style="flex:1 1 280px;border-radius:32px;background:linear-gradient(160deg,#104848,#0A7C7C);color:#FFFFFF;padding:22px;text-decoration:none"><div style="display:flex;justify-content:space-between"><span style="font:500 14px Inter,sans-serif;opacity:.85">( Семавик® )</span><svg width="18" height="18"><use href="#arr"></use></svg></div><div style="margin-top:44px;font:600 44px Unbounded,sans-serif;letter-spacing:-.02em">−27 кг</div><div style="margin-top:6px;font:600 14px Inter,sans-serif;opacity:.85">Заира Магомедова · 39 лет</div><p style="margin:16px 0 0;font:600 17px/1.35 Inter,sans-serif">Попытки похудеть были неоднократные. Пробовала интервальное голодание…</p></a>
+<a href="#stories" class="tile" style="flex:1 1 280px;border-radius:32px;background:linear-gradient(160deg,#FFE3D1,#FFF2E8);padding:22px;text-decoration:none"><div style="display:flex;justify-content:space-between"><span class="lab" style="color:#25272B">( Седжаро® )</span><svg width="18" height="18"><use href="#arr"></use></svg></div><div style="margin-top:44px;font:600 44px Unbounded,sans-serif;letter-spacing:-.02em">−20 кг</div><div style="margin-top:6px;font:600 14px Inter,sans-serif;color:#5F636B">Анна Макарова · 36 лет</div><p style="margin:16px 0 0;font:600 17px/1.35 Inter,sans-serif">Моя жизнь почти всегда была связана с похудением. С самого детства я была полным ребёнком…</p></a>
+<a href="#stories" class="tile" style="flex:1 1 280px;border-radius:32px;background:linear-gradient(160deg,#CDEFE9,#EAF8F5);padding:22px;text-decoration:none"><div style="display:flex;justify-content:space-between"><span class="lab" style="color:#25272B">( Семавик® )</span><svg width="18" height="18"><use href="#arr"></use></svg></div><div style="margin-top:44px;font:600 44px Unbounded,sans-serif;letter-spacing:-.02em">−30 кг</div><div style="margin-top:6px;font:600 14px Inter,sans-serif;color:#5F636B">Екатерина Козлова</div><p style="margin:16px 0 0;font:600 17px/1.35 Inter,sans-serif">Я решила не садиться на диеты, морить себя голодом и приходить к срывам…</p></a>
+</div>
+<label for="more-st" class="lnk more-btn" style="display:none;align-items:center;gap:8px;font:600 16px Inter,sans-serif;color:#25272B;border-bottom:2.5px solid #FF6B0C;padding-bottom:4px;white-space:nowrap;cursor:pointer;margin:12px 4px 0;width:fit-content">Смотреть ещё<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#25272B" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg></label>
+
+</section>
+
+<!-- КОНТЕЙНЕР: ОТЗЫВЫ -->
+<section id="reviews" class="wrap" style="max-width:1360px;margin:0 auto 20px;background:#FFFFFF;border-radius:44px;padding:20px">
+<div style="display:flex;flex-wrap:wrap;gap:20px 40px;padding:28px 24px 28px;align-items:flex-end;justify-content:space-between">
+<div><span class="lab">( Отзывы )</span><h2 style="margin:12px 0 0;font:600 clamp(30px,4vw,52px)/1.08 Unbounded,sans-serif;letter-spacing:-.02em;display:flex;align-items:center;gap:14px;flex-wrap:wrap">Отзывы <span style="font:600 14px Inter,sans-serif;letter-spacing:.04em;padding:6px 14px;border-radius:999px;background:#25272B;color:#FFFFFF">180</span></h2></div>
+<p style="margin:0;max-width:420px;font:400 16px/1.5 Inter,sans-serif;color:#5F636B">Слова людей, которые прошли этот путь. В макете использованы цитаты из текущих историй сайта; отзывы клиента подставляются на их место.</p>
+</div>
+<div class="revrow" id="rev-scroll" style="display:flex;flex-wrap:wrap;gap:12px;padding:0 4px 4px">
+<div style="flex:1 1 300px;display:flex;flex-direction:column;gap:12px">
+<div class="tile" style="border-radius:32px;background:linear-gradient(160deg,#FFE3D1,#FFF2E8);padding:26px"><blockquote style="margin:0;font:600 24px/1.2 Inter,sans-serif">«Я не чувствовала насыщения»</blockquote><div style="margin-top:20px;display:flex;align-items:center;gap:10px"><span class="hatch" style="width:40px;height:40px;border-radius:50%;background-color:#FFE3D1"></span><span style="font:500 13px/1.35 Inter,sans-serif">Ирина Горбачёва, 38 лет<br><span style="color:#5F636B">−11 кг</span></span></div></div>
+<div class="tile hatch" style="flex:1;min-height:224px;border-radius:32px;background-color:#CDEFE9;display:flex;align-items:flex-end;padding:18px"><span style="background:#FFFFFF;border-radius:999px;padding:6px 14px;font:600 12px Inter,sans-serif">[Фото героини]</span></div>
+<div class="tile" style="border-radius:32px;background:linear-gradient(160deg,#FFE3D1,#FFF2E8);padding:26px"><blockquote style="margin:0;font:600 24px/1.2 Inter,sans-serif">«Я не чувствовала насыщения»</blockquote><div style="margin-top:20px;font:500 13px/1.35 Inter,sans-serif">Ирина Горбачёва, 38 лет<br><span style="color:#5F636B">−11 кг</span></div></div>
+</div>
+<div style="flex:1 1 300px;display:flex;flex-direction:column;gap:12px">
+<div class="tile" style="border-radius:32px;background:#F4F5F7;padding:26px"><blockquote style="margin:0;font:600 24px/1.2 Inter,sans-serif">«Я не просто похудела. Я вернула себе здоровье, энергию и уверенность»</blockquote><div style="margin-top:20px;font:500 13px/1.35 Inter,sans-serif">Дарья Т., 35 лет<br><span style="color:#5F636B">−14 кг</span></div></div>
+<div class="tile" style="border-radius:32px;background:linear-gradient(160deg,#104848,#0A7C7C);color:#FFFFFF;padding:26px;display:flex;flex-direction:column;justify-content:space-between;min-height:220px"><blockquote style="margin:0;font:600 24px/1.2 Inter,sans-serif">«Разделил мою жизнь на До и После»</blockquote><div style="margin-top:20px;font:500 13px/1.35 Inter,sans-serif">Заира Магомедова, 39 лет<br><span style="opacity:.8">−27 кг</span></div></div>
+<div class="tile" style="border-radius:32px;background:#F4F5F7;padding:26px"><blockquote style="margin:0;font:600 24px/1.2 Inter,sans-serif">«Я не просто похудела. Я вернула себе здоровье, энергию и уверенность»</blockquote><div style="margin-top:20px;font:500 13px/1.35 Inter,sans-serif">Дарья Т., 35 лет<br><span style="color:#5F636B">−14 кг</span></div></div>
+</div>
+<div style="flex:1 1 300px;display:flex;flex-direction:column;gap:12px">
+<div class="tile" style="border-radius:32px;background:#25272B;color:#FFFFFF;padding:26px"><blockquote style="margin:0;font:600 24px/1.2 Inter,sans-serif">«Больше не хочу делать вид, будто меня всё устраивает»</blockquote><div style="margin-top:20px;font:500 13px/1.35 Inter,sans-serif">Марина Самофалова, 42 года<br><span style="opacity:.75">−17 кг</span></div></div>
+<div class="tile" style="border-radius:32px;background:linear-gradient(160deg,#CDEFE9,#EAF8F5);padding:26px"><blockquote style="margin:0;font:600 24px/1.2 Inter,sans-serif">«Изменил не только мою внешность, но и моё внутреннее состояние»</blockquote><div style="margin-top:20px;font:500 13px/1.35 Inter,sans-serif">Алёна Намазова<br><span style="color:#5F636B">−14 кг</span></div></div>
+<div class="tile" style="flex:1;border-radius:32px;background:linear-gradient(120deg,#FF6B0C,#FFA400);padding:26px"><blockquote style="margin:0;font:600 24px/1.2 Inter,sans-serif">«Еда постепенно заняла огромное место в моей жизни»</blockquote><div style="margin-top:20px;font:500 13px/1.35 Inter,sans-serif">Алина Герман, 41 год<br><span>−46 кг</span></div></div>
+</div>
+<a href="#reviews" class="tile rev-end" style="display:none;text-decoration:none"><div style="font:500 14px Inter,sans-serif;opacity:.8">( ещё )</div><div style="margin-top:28px;font:600 40px Unbounded,sans-serif;letter-spacing:-.02em">+172</div><div style="margin-top:8px;font:600 16px/1.3 Inter,sans-serif">отзыва ждут вас</div><span style="margin-top:auto;display:inline-flex;align-items:center;gap:12px;font:600 15px Inter,sans-serif"><span style="width:44px;height:44px;border-radius:50%;background:#FF6B0C;display:flex;align-items:center;justify-content:center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg></span>Смотреть ещё</span></a>
+</div>
+<div class="rev-more" style="display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;padding:20px 4px 4px"><div style="display:flex;flex-direction:column;gap:10px;min-width:240px"><span style="font:500 14px Inter,sans-serif;color:#5F636B">Показано 8 из 180 · осталось 172</span><div role="progressbar" aria-label="Показано 8 из 180 отзывов" aria-valuemin="0" aria-valuemax="180" aria-valuenow="8" style="width:260px;max-width:100%;height:6px;border-radius:999px;background:#E3E7EC;overflow:clip"><div style="width:4.4%;height:100%;border-radius:999px;background:linear-gradient(90deg,#FF6B0C,#FFA400)"></div></div></div><a href="#reviews" class="lnk" style="display:inline-flex;align-items:center;gap:8px;font:600 16px Inter,sans-serif;color:#25272B;text-decoration:none;border-bottom:2.5px solid #FF6B0C;padding-bottom:4px;white-space:nowrap;cursor:pointer">Смотреть ещё<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#25272B" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg></a></div>
+<div class="rev-track" aria-hidden="true" style="display:none;position:relative;height:10px;border:1.5px solid #25272B;border-radius:999px;overflow:clip;margin:20px 4px 4px"><div id="rev-thumb" style="position:absolute;top:0;bottom:0;border-radius:999px;background:#25272B;left:0%;width:38%"></div></div>
+</section>
+
+<!-- БАННЕР 2 -->
+<section aria-label="Рекламный баннер" class="wrap" style="max-width:1360px;margin:0 auto 20px;background:#FFFFFF;border-radius:44px;padding:20px">
+<div style="border-radius:32px;background:linear-gradient(120deg,#5BEFD9 0%,#3BBDAD 100%);padding:44px;display:flex;flex-wrap:wrap;gap:24px;align-items:center;justify-content:space-between">
+<div style="max-width:560px"><span style="background:rgba(255,255,255,.45);border-radius:999px;padding:6px 14px;font:600 12px Inter,sans-serif">( реклама )</span>
+<h2 style="margin:18px 0 0;font:600 clamp(26px,3.2vw,40px)/1.1 Unbounded,sans-serif;letter-spacing:-.01em">Приложение Stroynee</h2>
+<p style="margin:14px 0 0;font:400 18px/1.5 Inter,sans-serif">Бесплатное приложение для всех. Видит ваше похудение и поможет дойти до результата.</p></div>
+<a href="#solutions" class="pill" style="display:inline-flex;align-items:center;gap:12px;height:52px;padding:0 22px 0 5px;border-radius:999px;background:#FFFFFF;border:1.5px solid #25272B;color:#25272B;font:600 15px Inter,sans-serif;text-decoration:none;white-space:nowrap"><span style="width:40px;height:40px;border-radius:50%;background:#FF6B0C;display:flex;align-items:center;justify-content:center;flex:0 0 40px"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="3" width="10" height="18" rx="2.5"/><path d="M10.5 18h3"/></svg></span>Скачать приложение</a>
+</div>
+</section>
+
+<!-- СТАТЬИ -->
+<section id="articles" class="wrap" style="max-width:1360px;margin:0 auto 20px;background:#FFFFFF;border-radius:44px;padding:20px">
+<div style="display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:flex-end;padding:28px 24px">
+<div><span class="lab">( Блог )</span><h2 style="margin:12px 0 0;font:600 clamp(30px,4vw,52px)/1.08 Unbounded,sans-serif;letter-spacing:-.02em">Статьи о здоровом похудении</h2></div>
+<a href="#articles" class="lnk" style="display:inline-flex;align-items:center;gap:8px;font:600 16px Inter,sans-serif;color:#25272B;text-decoration:none;border-bottom:2.5px solid #FF6B0C;padding-bottom:4px;white-space:nowrap;cursor:pointer">Все статьи<svg width="16" height="16" aria-hidden="true"><use href="#arr"></use></svg></a>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 12px; padding: 0 4px 4px; position: relative">
+<a href="#articles" class="tile" style="position:relative;overflow:clip;flex:1.5 1 480px;min-height:460px;border-radius:32px;background:linear-gradient(160deg,#CDEFE9,#EAF8F5 55%,#FFE3D1);padding:26px;text-decoration:none;display:flex;flex-direction:column;justify-content:space-between">
+<div style="display:flex;gap:8px;flex-wrap:wrap"><span style="background:#FFFFFF;border-radius:999px;padding:6px 14px;font:600 12px Inter,sans-serif">тег</span></div>
+
+<div class="hatch" style="position:absolute;right:0;bottom:0;width:353px;max-width:46%;height:423px;max-height:86%;border-radius:36px 0 32px 0"></div>
+<div style="position:relative"><div style="font:600 clamp(24px,2.8vw,38px)/1.1 Unbounded,sans-serif;letter-spacing:-.02em;max-width:460px">Почему вес не уходит: развенчиваем главные мифы о похудении</div><p style="margin:14px 0 0;font:400 16px/1.5 Inter,sans-serif;color:#5F636B;max-width:380px">[Анонс статьи: 2–3 предложения]</p></div>
+</a>
+<div style="flex:1 1 360px;display:flex;flex-direction:column;gap:12px">
+<a href="#articles" class="tile" style="border-radius:28px;background:#F4F5F7;padding:12px;display:flex;gap:14px;align-items:center;text-decoration:none"><div class="hatch" style="flex:0 0 108px;height:92px;border-radius:20px;background-color:#E3E7EC"></div><div><span class="lab">( Статья )</span><div style="margin-top:6px;font:600 17px/1.25 Inter,sans-serif">Лишний вес или ожирение?</div></div></a>
+<a href="#articles" class="tile" style="border-radius:28px;background:#F4F5F7;padding:12px;display:flex;gap:14px;align-items:center;text-decoration:none"><div class="hatch" style="flex:0 0 108px;height:92px;border-radius:20px;background-color:#E3E7EC"></div><div><span class="lab">( Статья )</span><div style="margin-top:6px;font:600 17px/1.25 Inter,sans-serif">Почему мы переедаем и как с этим бороться?</div></div></a>
+<a href="#articles" class="tile" style="border-radius:28px;background:#F4F5F7;padding:12px;display:flex;gap:14px;align-items:center;text-decoration:none"><div class="hatch" style="flex:0 0 108px;height:92px;border-radius:20px;background-color:#E3E7EC"></div><div><span class="lab">( Статья )</span><div style="margin-top:6px;font:600 17px/1.25 Inter,sans-serif">Лишний вес у мужчин: причины, последствия и методы борьбы</div></div></a>
+<a href="#articles" class="tile" style="border-radius:28px;background:#F4F5F7;padding:12px;display:flex;gap:14px;align-items:center;text-decoration:none"><div class="hatch" style="flex:0 0 108px;height:92px;border-radius:20px;background-color:#E3E7EC"></div><div><span class="lab">( Статья )</span><div style="margin-top:6px;font:600 17px/1.25 Inter,sans-serif">Инсулинорезистентность и лишний вес: почему вы не можете похудеть и как это исправить</div></div></a>
+</div>
+</div>
+</section>
+
+<!-- БАННЕР 3 -->
+<section aria-label="Рекламный баннер" class="wrap" style="max-width:1360px;margin:0 auto 20px;background:#FFFFFF;border-radius:44px;padding:20px">
+<div style="border-radius:32px;background:linear-gradient(120deg,#25272B 0%,#0A7C7C 100%);color:#FFFFFF;padding:44px;display:flex;flex-wrap:wrap;gap:24px;align-items:center;justify-content:space-between">
+<div style="max-width:560px"><span style="background:rgba(255,255,255,.2);border-radius:999px;padding:6px 14px;font:600 12px Inter,sans-serif">( реклама )</span>
+<h2 style="margin:18px 0 0;font:600 clamp(26px,3.2vw,40px)/1.1 Unbounded,sans-serif;letter-spacing:-.01em">Абонемент здоровья</h2>
+<p style="margin:14px 0 0;font:400 18px/1.5 Inter,sans-serif">Вступите в программу лояльности и получайте скидки и кэшбэки за каждую покупку препаратов.</p></div>
+<a href="#solutions" class="pill" style="display:inline-flex;align-items:center;gap:12px;height:52px;padding:0 22px 0 5px;border-radius:999px;background:#FFFFFF;border:1.5px solid #25272B;color:#25272B;font:600 15px Inter,sans-serif;text-decoration:none;white-space:nowrap"><span style="width:40px;height:40px;border-radius:50%;background:#FF6B0C;display:flex;align-items:center;justify-content:center;flex:0 0 40px"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2.5"/><path d="M3 10h18"/><path d="M7 14.5h4"/></svg></span>Подробнее</a>
+</div>
+</section>
+
+<!-- ГЕРОФАРМ -->
+<section id="gerofarm" class="wrap" style="max-width:1360px;margin:0 auto 20px;background:#FFFFFF;border-radius:44px;padding:20px">
+<div class="pad" style="border-radius:32px;background:linear-gradient(135deg,#0A7C7C 0%,#2FB5AA 100%);color:#FFFFFF;padding:48px">
+<span style="font:500 14px Inter,sans-serif;opacity:.85">( Мы — ГЕРОФАРМ )</span>
+<h2 style="margin:14px 0 0;font:600 clamp(28px,3.6vw,48px)/1.08 Unbounded,sans-serif;letter-spacing:-.02em">Мы — ГЕРОФАРМ</h2>
+<p style="margin:16px 0 0;font:400 18px/1.5 Inter,sans-serif;max-width:520px;opacity:.92">Совершенствуемся, чтобы соответствовать лучшим практикам мировой фармацевтики.</p>
+<div style="margin-top:32px;display:flex;flex-wrap:wrap;gap:12px">
+<div style="flex:1 1 200px;border-radius:26px;background:rgba(255,255,255,.18);padding:22px"><div style="font:600 34px Unbounded,sans-serif">25 лет</div><div style="margin-top:8px;font:400 15px/1.4 Inter,sans-serif;opacity:.9">на рынке</div></div>
+<div style="flex:1 1 200px;border-radius:26px;background:rgba(255,255,255,.18);padding:22px"><div style="font:600 34px Unbounded,sans-serif">№1</div><div style="margin-top:8px;font:400 15px/1.4 Inter,sans-serif;opacity:.9">в России по выпуску инсулинов и препаратов для борьбы с ожирением</div></div>
+<div style="flex:1 1 200px;border-radius:26px;background:rgba(255,255,255,.18);padding:22px"><div style="font:600 34px Unbounded,sans-serif">14 стран</div><div style="margin-top:8px;font:400 15px/1.4 Inter,sans-serif;opacity:.9">экспорт лекарств</div></div>
+<div style="flex:1 1 200px;border-radius:26px;background:rgba(255,255,255,.18);padding:22px"><div style="font:600 34px Unbounded,sans-serif">2000+</div><div style="margin-top:8px;font:400 15px/1.4 Inter,sans-serif;opacity:.9">сотрудников, из них 200+ — учёные</div></div>
+</div>
+<p style="margin:16px 0 0;font:400 12px/1.5 Inter,sans-serif;opacity:.8">Источники: IQVIA, бюджетный рынок за 2025 г.; RNC Pharma, 2025.</p>
+<div style="margin-top:28px;display:flex;flex-wrap:wrap;gap:12px">
+<a href="#gerofarm" class="pill" style="height:64px;padding:0 32px 0 4px;border-radius:999px;background:#25272B;color:#FFFFFF;font:600 18px Inter,sans-serif;display:inline-flex;align-items:center;gap:18px;text-decoration:none"><span style="width:56px;height:56px;border-radius:50%;background:#FF6B0C;display:flex;align-items:center;justify-content:center"><svg width="26" height="46" viewBox="0 0 26 46" style="height:40px;width:auto"><use href="#pen"></use></svg></span>Перейти к Седжаро®</a>
+<a href="#gerofarm" class="pill" style="height:64px;padding:0 32px 0 4px;border-radius:999px;background:#25272B;color:#FFFFFF;font:600 18px Inter,sans-serif;display:inline-flex;align-items:center;gap:18px;text-decoration:none"><span style="width:56px;height:56px;border-radius:50%;background:#0A7C7C;display:flex;align-items:center;justify-content:center"><svg width="26" height="46" viewBox="0 0 26 46" style="height:40px;width:auto"><use href="#pen-t"></use></svg></span>Перейти к Семавик®</a>
+</div>
+</div>
+</section>
+
+<!-- ПОДВАЛ -->
+<footer class="wrap" style="max-width:1360px;margin:0 auto;background:#FFFFFF;border-radius:44px;padding:20px;display:flex;flex-wrap:wrap;gap:12px;width:1393px">
+<div style="flex:1.2 1 460px;border-radius:32px;background:linear-gradient(135deg,#0A7C7C 0%,#3BBDAD 100%);color:#FFFFFF;padding:36px;min-height:320px;display:flex;flex-direction:column;justify-content:space-between;gap:28px">
+<svg width="230" height="46" viewBox="0 0 210 42" role="img" aria-label="Stroynee.pro" style="display:block"><use href="#logo"></use></svg>
+<p style="margin:0;max-width:440px;font:400 15px/1.55 Inter,sans-serif;opacity:.95">Составить план похудения, узнать об эффективных способах сбросить вес, учесть особенности здоровья — узнайте больше о том, как худеть легко и безопасно.</p>
+<div style="display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between"><a href="#solutions" class="pill" style="display:inline-flex;align-items:center;gap:12px;height:48px;padding:0 22px 0 5px;border-radius:999px;background:#FFFFFF;border:1.5px solid #25272B;color:#25272B;font:600 15px Inter,sans-serif;text-decoration:none;white-space:nowrap"><span style="width:36px;height:36px;border-radius:50%;background:#FF6B0C;display:flex;align-items:center;justify-content:center;flex:0 0 36px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4.5h6M8 4h8a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><path d="M9 13.5l2.2 2.2 4-4.4"/></svg></span>Пройти тест</a><span style="font:400 13px Inter,sans-serif;opacity:.85">© 2026 [Правообладатель]. Все права защищены.</span></div>
+</div>
+<div style="flex:1 1 480px;border-radius:32px;background:linear-gradient(135deg,#2FB5AA 0%,#5BEFD9 100%);padding:36px;display:flex;flex-direction:column;justify-content:space-between;gap:28px">
+<div style="display:flex;flex-wrap:wrap;gap:28px 40px;font:500 15px/1.9 Inter,sans-serif">
+<div><div style="font:600 14px Unbounded,sans-serif;margin-bottom:6px">Сервисы</div><div style="display:flex;flex-direction:column"><a href="#solutions" style="text-decoration:none">Тест</a><a href="#solutions" style="text-decoration:none">Приложение Stroynee</a><a href="#solutions" style="text-decoration:none">Калькулятор</a><a href="#solutions" style="text-decoration:none">Абонемент здоровья</a><a href="#solutions" style="text-decoration:none">Школа диабета Терапевтум</a></div></div>
+<div><div style="font:600 14px Unbounded,sans-serif;margin-bottom:6px">Разделы</div><div style="display:flex;flex-direction:column"><a href="#stories" style="text-decoration:none">Истории похудения</a><a href="#reviews" style="text-decoration:none">Отзывы</a><a href="#articles" style="text-decoration:none">Блог</a><a href="#articles" style="text-decoration:none">Новости</a><a href="#gerofarm" style="text-decoration:none">Для специалистов</a></div></div>
+<div><div style="font:600 14px Unbounded,sans-serif;margin-bottom:6px">О проекте</div><div style="display:flex;flex-direction:column"><a href="#gerofarm" style="text-decoration:none">О нас</a><a href="#gerofarm" style="text-decoration:none">Политика конфиденциальности</a><a href="#gerofarm" style="text-decoration:none">Пользовательское соглашение</a><a href="#gerofarm" style="text-decoration:none">Согласие на обработку персональных данных</a></div></div>
+</div>
+<div><p style="margin:0;max-width:520px;font:400 12px/1.55 Inter,sans-serif">Информация, опубликованная на сайте, предназначена только для ознакомления и не заменяет консультацию врача. Проект создан при информационной поддержке международного центра здоровья Verba Mayr.</p>
+<div style="margin-top:16px;display:flex;gap:8px"><a href="#gerofarm" aria-label="ВКонтакте" style="width:42px;height:42px;border-radius:50%;background:#FFFFFF;display:flex;align-items:center;justify-content:center;font:600 12px Inter,sans-serif;text-decoration:none">VK</a><a href="#gerofarm" aria-label="Telegram" style="width:42px;height:42px;border-radius:50%;background:#FFFFFF;display:flex;align-items:center;justify-content:center;font:600 12px Inter,sans-serif;text-decoration:none">TG</a><a href="#gerofarm" aria-label="Одноклассники" style="width:42px;height:42px;border-radius:50%;background:#FFFFFF;display:flex;align-items:center;justify-content:center;font:600 12px Inter,sans-serif;text-decoration:none">OK</a><a href="#gerofarm" aria-label="Rutube" style="width:42px;height:42px;border-radius:50%;background:#FFFFFF;display:flex;align-items:center;justify-content:center;font:600 12px Inter,sans-serif;text-decoration:none">RU</a><a href="#gerofarm" aria-label="YouTube" style="width:42px;height:42px;border-radius:50%;background:#FFFFFF;display:flex;align-items:center;justify-content:center;font:600 12px Inter,sans-serif;text-decoration:none">YT</a></div></div>
+</div>
+</footer>
+</div>
+
+<script>
+(function(){
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches||!('IntersectionObserver' in window))return;
+  var sel='h1, h1 ~ *, h2, .tile, .big, .pad, .giant, .hero-t, .center-tile, .fl-top';
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('rv-in');io.unobserve(e.target);countUp(e.target);}});},{threshold:0.12,rootMargin:'0px 0px -6% 0px'});
+  function arm(el){
+    var idx=el.parentElement?Array.prototype.indexOf.call(el.parentElement.children,el):0;
+    el.style.transitionDelay=(Math.min(idx,5)*80)+'ms';
+    el.classList.add('rv-pre');
+    el.addEventListener('transitionend',function(ev){if(ev.propertyName==='transform'){el.classList.remove('rv-pre','rv-in');el.style.transitionDelay='';}});
+    io.observe(el);
+  }
+  document.querySelectorAll(sel).forEach(arm);
+  function countUp(root){
+    var nodes=root.querySelectorAll?root.querySelectorAll('div[style*="font:600 34px Unbounded"],div[style*="font:600 44px Unbounded"]'):[];
+    nodes.forEach(function(n){
+      if(n.dataset.counted)return; n.dataset.counted='1';
+      var m=n.textContent.trim().match(/^([\u2212-]?)(\d+)(.*)$/); if(!m)return;
+      var sign=m[1],target=parseInt(m[2],10),rest=m[3],t0=null;
+      function step(ts){if(!t0)t0=ts;var p=Math.min((ts-t0)/1200,1);var v=Math.round(target*(1-Math.pow(1-p,3)));n.textContent=sign+v+rest;if(p<1)requestAnimationFrame(step);}
+      n.textContent=sign+'0'+rest;requestAnimationFrame(step);
+    });
+  }
+})();
+</script>
+<script>
+(function(){var sc=document.getElementById('rev-scroll'),th=document.getElementById('rev-thumb');if(!sc||!th)return;
+function upd(){var m=sc.scrollWidth;if(!m)return;th.style.left=(sc.scrollLeft/m*100)+'%';th.style.width=(sc.clientWidth/m*100)+'%';}
+sc.addEventListener('scroll',upd,{passive:true});window.addEventListener('resize',upd);upd();})();
+</script>
+</body>
+</html>
