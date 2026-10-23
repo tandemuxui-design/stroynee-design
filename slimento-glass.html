@@ -60,7 +60,7 @@ body{background:var(--bg);color:var(--ink)}
 .page{position:relative;max-width:1440px;margin:0 auto;padding:0 64px 64px}
 .blobs{position:absolute;inset:0;pointer-events:none;z-index:0}
 .blob{position:absolute;border-radius:50%;filter:blur(75px);opacity:var(--o);animation:drift 22s ease-in-out infinite alternate}
-.blob.o{background:#FFA24D}.blob.g{background:#3AEBB0}
+.blob.o{background:#FFA24D}.blob.g{background:#9FDCC9}
 @keyframes drift{to{transform:translate(var(--tx,60px),var(--ty,-40px)) scale(1.08)}}
 .page>*:not(.blobs){position:relative;z-index:1}
 /* glass */
@@ -113,6 +113,20 @@ body{background:var(--bg);color:var(--ink)}
 .sheet a{font-size:28px;font-weight:600;letter-spacing:-.02em;padding:8px 0;transform:translateY(16px);opacity:0;transition:transform .5s cubic-bezier(.2,.7,.2,1),opacity .5s;transition-delay:calc(var(--i) * 45ms)}
 .menu-open .sheet{opacity:1;pointer-events:auto}
 .menu-open .sheet a{transform:none;opacity:1}
+
+.mesh{position:absolute;left:0;right:0;top:0;overflow:hidden;pointer-events:none;background:#FCE3CF;z-index:0}
+.mesh i{position:absolute;border-radius:50%;filter:blur(120px);will-change:transform;animation:meshmove var(--d,20s) ease-in-out infinite alternate}
+@keyframes meshmove{0%{transform:translate(0,0) scale(1)}33%{transform:translate(calc(var(--x1,120px) * 2.4),calc(var(--y1,80px) * 2)) scale(1.18)}66%{transform:translate(calc(var(--x2,-100px) * 2.6),calc(var(--y2,140px) * 1.8)) scale(.9)}100%{transform:translate(calc(var(--y1,80px) * -1.6),calc(var(--x1,120px) * 1.4)) scale(1.1)}}
+.mesh i{animation-duration:calc(var(--d,20s) * .5)!important;animation-direction:alternate!important}
+.mesh{animation:meshhue 14s ease-in-out infinite alternate}
+@keyframes meshhue{to{filter:hue-rotate(-12deg) saturate(1.12)}}
+.mesh::after{content:"";position:absolute;left:0;right:0;bottom:0;height:420px;background:linear-gradient(rgba(248,248,249,0),var(--bg))}
+.page{z-index:1}
+.hcard{box-shadow:0 26px 60px -30px rgba(120,70,30,.35);border:1.5px solid rgba(255,255,255,.9)}
+.hpanel{background:rgba(255,255,255,.45);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)}
+.art.gl,.ft.gl{background:#fff;backdrop-filter:none;-webkit-backdrop-filter:none;border:1px solid #E6E8EB;box-shadow:0 10px 30px -6px rgba(38,38,43,.07)}
+.bn{background:linear-gradient(90deg,#FFB27A,#FFE0C2 50%,#A9DCC8)}
+.center .pill.glass{background:#fff;backdrop-filter:none;-webkit-backdrop-filter:none;border:1px solid #E6E8EB}
 /* hero */
 .hero{display:grid;grid-template-columns:minmax(0,840fr) minmax(0,426fr);gap:46px;margin-top:28px}
 .hcard{border-radius:40px;overflow:hidden;box-shadow:0 26px 60px -24px rgba(255,140,65,.5)}
@@ -315,6 +329,7 @@ body{background:var(--bg);color:var(--ink)}
  .hcard{border-radius:28px}
  .hcard .ba{height:300px}
  .hpanel{padding:26px 20px 28px}
+ .mesh i{filter:blur(80px)}
  .hpanel h1{font-size:32px}
  .hpanel p{font-size:16px}
  .checks{flex-direction:column;align-items:center}
@@ -359,12 +374,29 @@ body{background:var(--bg);color:var(--ink)}
  .d3-apple{width:74px;right:8px;top:-30px}
  .hpanel .hex{display:none}
 }
+
+/* === flat glass, GEROFARM-style === */
+.gl{background:rgba(255,255,255,.32)!important;border:0!important;box-shadow:none!important;backdrop-filter:blur(30px) saturate(130%)!important;-webkit-backdrop-filter:blur(30px) saturate(130%)!important;border-radius:16px!important}
+.gl::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;background:radial-gradient(140% 100% at 0% 0%,rgba(255,255,255,.9),rgba(255,255,255,.25) 40%,rgba(255,255,255,0) 70%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+.gl:hover{box-shadow:none!important}
+.pill.glass{background:rgba(255,255,255,.45);border:0;box-shadow:none;position:relative}
+.pill.glass::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;background:radial-gradient(140% 100% at 0% 0%,rgba(255,255,255,.9),rgba(255,255,255,.25) 40%,rgba(255,255,255,0) 70%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+.hcard{border:0!important;box-shadow:none!important;border-radius:16px!important}
+.hpanel{background:rgba(255,255,255,.32)!important;backdrop-filter:blur(30px)!important;-webkit-backdrop-filter:blur(30px)!important}
+.art.gl,.ft.gl{background:#fff!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;border:1px solid #E6E8EB!important}
+.art.gl::before,.ft.gl::before{display:none}
+.center .pill.glass{background:#fff;border:1px solid #E6E8EB}.center .pill.glass::before{display:none}
+.hd .pill.glass{background:rgba(255,255,255,.6)}
+.scard .pair,.art .im,.feat,.bn,.stories{border-radius:16px}
+.bn .w,.bn .im{border-radius:10px}
+.qc{border-radius:16px}
 </style>
 </head>
 <body>
 <div class="sheet" id="sheet" aria-label="Меню">
  <a href="#stories" style="--i:0">Истории</a><a href="#reviews" style="--i:1">Отзывы</a><a href="#blog" style="--i:2">Блог</a><a href="#" style="--i:3">Калькулятор</a><a href="#" style="--i:4">Препараты</a><a href="#" style="--i:5">Новости</a><a href="#app" style="--i:6">О приложении</a><a href="#" style="--i:7">Для специалистов</a>
 </div>
+<div class="mesh" aria-hidden="true"><i style="background:#FF8A47;opacity:0.9;width:620px;height:620px;left:-8%;top:-10%;--x1:260px;--y1:150px;--x2:-200px;--y2:-126px;--d:18s;filter:blur(90px)"></i><i style="background:#FFC48A;opacity:0.85;width:560px;height:560px;left:30%;top:40%;--x1:-240px;--y1:-120px;--x2:184px;--y2:100px;--d:20s;filter:blur(90px)"></i><i style="background:#FFE6CC;opacity:0.9;width:520px;height:520px;left:48%;top:-18%;--x1:200px;--y1:180px;--x2:-154px;--y2:-151px;--d:17s;filter:blur(90px)"></i><i style="background:#9EDFD0;opacity:0.9;width:600px;height:600px;left:62%;top:8%;--x1:-280px;--y1:140px;--x2:215px;--y2:-117px;--d:21s;filter:blur(90px)"></i><i style="background:#5FC7B8;opacity:0.8;width:520px;height:520px;left:78%;top:48%;--x1:-220px;--y1:-160px;--x2:169px;--y2:133px;--d:19s;filter:blur(90px)"></i><i style="background:#FFB070;opacity:0.8;width:480px;height:480px;left:8%;top:52%;--x1:240px;--y1:-140px;--x2:-185px;--y2:116px;--d:22s;filter:blur(90px)"></i><i style="background:#C6ECE2;opacity:0.9;width:460px;height:460px;left:88%;top:-14%;--x1:-200px;--y1:200px;--x2:153px;--y2:-167px;--d:16s;filter:blur(90px)"></i></div>
 <div class="page">
  <div class="blobs" aria-hidden="true">
   <i class="blob o" style="--o:0.22;width:600px;height:600px;left:-100px;top:6000px;--tx:50px;--ty:-40px;animation-duration:20.0s"></i>
@@ -625,7 +657,8 @@ document.querySelectorAll('a[href="#"]').forEach(a=>a.addEventListener('click',e
 window.__RM=RM;
 })();
 
-addEventListener('load',()=>requestAnimationFrame(()=>document.documentElement.classList.add('loaded')));
+function fitMesh(){const m=document.querySelector('.mesh'),h=document.querySelector('.hero');if(m&&h)m.style.height=(h.getBoundingClientRect().bottom+scrollY+340)+'px';}addEventListener('resize',fitMesh);fitMesh();
+addEventListener('load',()=>{fitMesh();requestAnimationFrame(()=>document.documentElement.classList.add('loaded'))});
 setTimeout(()=>document.documentElement.classList.add('loaded'),1200);
 </script>
 </body>
